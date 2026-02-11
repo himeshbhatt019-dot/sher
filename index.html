@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Just For You ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+.card {
+    background: rgba(255,255,255,0.15);
+    padding: 25px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 360px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    display: none;
+}
+
+.card.active {
+    display: block;
+    animation: fade 0.6s ease;
+}
+
+@keyframes fade {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+button {
+    background: white;
+    color: #ff4d6d;
+    border: none;
+    padding: 12px 22px;
+    margin: 10px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ffe6ec;
+    transform: scale(1.05);
+}
+
+.heart {
+    font-size: 45px;
+    animation: beat 1s infinite;
+}
+
+@keyframes beat {
+    0%,100% {transform: scale(1);}
+    50% {transform: scale(1.3);}
+}
+
+/* BLAST */
+@keyframes shake {
+    0% {transform: translateX(0);}
+    25% {transform: translateX(-15px);}
+    50% {transform: translateX(15px);}
+    75% {transform: translateX(-15px);}
+    100% {transform: translateX(0);}
+}
+
+.boom {
+    animation: shake 0.4s;
+}
+
+/* HEART RAIN */
+.falling-heart {
+    position: fixed;
+    top: -20px;
+    font-size: 24px;
+    animation: fall 4s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="song" preload="metadata">
+  <source src="C:\Users\jyoti\OneDrive\Documents\HTML\abc" type="audio/mpeg">
+</audio>
+
+<!-- Screen 1 -->
+<div class="card active">
+    <h2>Mukuu (Muskan) ❤️</h2>
+    <p>“Main simple sa banda hu momo,<br> bss itna chata hu jitni bhi baar pyar ho tere sth har baar ho.❤️”</p>
+    <button onclick="start()">Start 💖</button>
+</div>
+
+<!-- Screen 2 -->
+<div class="card">
+    <h2>Question 1 🙂</h2>
+    <p>Jab main thoda late reply karu,<br>kya tum thoda sa miss karti ho?</p>
+    <button onclick="next()">Bhot😤</button>
+    <button onclick="next()">Bhooooot jyda😡</button>
+</div>
+
+<!-- Screen 3 -->
+<div class="card">
+    <h2>Question 2 ☕</h2>
+    <p>Agar hum coffee pe milein,<br>kya baat coffee se zyada hot hogi? 😄</p>
+    <button onclick="next()">Ho sakta hai ☕</button>
+    <button onclick="next()">Definitely 🙂</button>
+</div>
+
+<!-- Screen 4 -->
+<div class="card">
+    <h2>Question 3 😅</h2>
+    <p>Mere jokes thode bad hote hain…<br>par kya tum phir bhi hans logi?</p>
+    <button onclick="next()">Try karungi 😄</button>
+    <button onclick="next()">Haan 😌</button>
+</div>
+
+<!-- Screen 5 -->
+<div class="card">
+    <h2>Question 4 🫶</h2>
+    <p>Life unpredictable hai,<br>kya main tumhara safe place ban sakta hoon?</p>
+    <button onclick="next()">Maybe ❤️</button>
+    <button onclick="next()">Yes 🙂</button>
+</div>
+
+<!-- FINAL -->
+<div class="card">
+    <div class="heart">❤️</div>
+    <h2>Ek Simple Sawaal 💍</h2>
+    <p id="msg">
+        Main perfect nahi hoon,<br>
+        par kya tum mere saath perfect moments banaogi?
+    </p>
+
+    <button onclick="yes()">YES 💕</button>
+    <button onclick="blast()">NO 😏</button>
+</div>
+
+<script>
+let current = 0;
+const cards = document.querySelectorAll('.card');
+const song = document.getElementById("song");
+
+function start() {
+    playSong();
+    next();
+}
+
+function playSong() {
+    if (song.readyState >= 1) {
+        song.currentTime = 36; // 🎵 36 sec se start
+        song.play();
+    } else {
+        song.onloadedmetadata = () => {
+            song.currentTime = 36;
+            song.play();
+        };
+    }
+}
+
+function next() {
+    cards[current].classList.remove('active');
+    current++;
+    cards[current].classList.add('active');
+}
+
+function blast() {
+    document.body.classList.add("boom");
+    document.getElementById("msg").innerHTML =
+        "😅 NO dabaya? Gentleman hoon,<br>par destiny thodi ziddi hai ❤️";
+
+    setTimeout(() => {
+        document.body.classList.remove("boom");
+    }, 400);
+}
+
+function yes() {
+    document.getElementById("msg").innerHTML =
+        "Thank you for choosing me ❤️<br>Main hamesha respect aur care dunga.";
+
+    for (let i = 0; i < 50; i++) {
+        createHeart();
+    }
+}
+
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "falling-heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (18 + Math.random() * 20) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+}
+</script>
+
+</body>
+</html>
